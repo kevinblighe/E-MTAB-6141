@@ -1,7 +1,7 @@
 A simple tutorial for a complex ComplexHeatmap
 ================
 Kevin Blighe
-2020-05-20
+2020-05-21
 
 # 1, introduction
 
@@ -91,34 +91,39 @@ and [PRJEB23131](https://www.ebi.ac.uk/ena/data/view/PRJEB23131),
 respectively.
 
 I have separately stored an expression matrix and sample metadata in my
-secured GitHub repository
+GitHub repository
 ([github.com/kevinblighe/](https://github.com/kevinblighe/)). The data
 will be downloaded to temporary files that will later be deleted by your
-operating system.
+operating system. The files are presented as uncompressed, plain text in
+order to ensure compatibility across all platforms outside of a standard
+build system.
 
 ``` r
   tmpfile <- tempfile()
-  download.file('https://github.com/kevinblighe/E-MTAB-6141/raw/master/rdata/mat.RDS',
+  download.file('https://github.com/kevinblighe/E-MTAB-6141/raw/master/rdata/mat.tsv',
     tmpfile, method = 'auto')
-  mat <- readRDS(tmpfile)
+  mat <- read.table(tmpfile, sep = '\t', row.names = 1,
+    header = TRUE, stringsAsFactors = FALSE)
 
   tmpfile <- tempfile()
-  download.file('https://github.com/kevinblighe/E-MTAB-6141/raw/master/rdata/metadata.RDS',
+  download.file('https://github.com/kevinblighe/E-MTAB-6141/raw/master/rdata/metadata.tsv',
     tmpfile, method = 'auto')
-  metadata <- readRDS(tmpfile)
+  metadata <- read.table(tmpfile, sep = '\t', row.names = 1,
+    header = TRUE, stringsAsFactors = FALSE)
 
   tmpfile <- tempfile()
-  download.file('https://github.com/kevinblighe/E-MTAB-6141/raw/master/rdata/sig_genes.RDS',
+  download.file('https://github.com/kevinblighe/E-MTAB-6141/raw/master/rdata/sig_genes.list',
     tmpfile, method = 'auto')
-  sig_genes <- readRDS(tmpfile)
+  sig_genes <- read.table(tmpfile, sep = '\t',
+    header = FALSE, stringsAsFactors = FALSE)[,1]
 ```
 
 Check the md5 checksums to ensure data integrity / security. The
 checksums should be:
 
-  - mat: d2428c961244ba0239b207d7152002ec
-  - metadata: 59753a00cb4d15878be12c46f5e8e300
-  - sig\_genes: fdc3e52c9cf0adff3747c7683b69d371
+  - ‘mat’ object: 1fbbe9568738577a2f3e3dc42e6c75cf
+  - ‘metadata’ object: 542a40ccf8b14c51ffa45361c5d3aed9
+  - ‘sig\_genes’ object: fdc3e52c9cf0adff3747c7683b69d371
 
 <!-- end list -->
 
@@ -126,13 +131,13 @@ checksums should be:
   digest::digest(mat, algo = 'md5')
 ```
 
-    ## [1] "d2428c961244ba0239b207d7152002ec"
+    ## [1] "1fbbe9568738577a2f3e3dc42e6c75cf"
 
 ``` r
   digest::digest(metadata, algo = 'md5')
 ```
 
-    ## [1] "59753a00cb4d15878be12c46f5e8e300"
+    ## [1] "542a40ccf8b14c51ffa45361c5d3aed9"
 
 ``` r
   digest::digest(sig_genes, algo = 'md5')
@@ -165,7 +170,7 @@ Take a look at the contents of the data.
     ## SAM9103804   Myeloid   3    0     0      4     0
     ## SAM9103805  Lymphoid   2    2     3      1     1
     ## SAM9103806   Fibroid   0    0     0      1     0
-    ## SAM9103807   Fibroid   0    0  <NA>      1     0
+    ## SAM9103807   Fibroid   0    0    NA      1     0
 
 ``` r
   # take a peek at the genes identified as statistically significant
