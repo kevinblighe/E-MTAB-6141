@@ -1,5 +1,4 @@
-ComplexHeatmap for Molecular Portraits of Early Rheumatoid Arthritis
-Identify Clinical and Treatment Response Phenotypes
+A simple tutorial for a complex ComplexHeatmap
 ================
 Kevin Blighe
 2020-05-20
