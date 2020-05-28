@@ -1,7 +1,7 @@
 A simple tutorial for a complex ComplexHeatmap
 ================
 Kevin Blighe
-2020-05-21
+2020-05-28
 
 # 1, introduction
 
@@ -261,7 +261,7 @@ histology scores.
     col.cd68SL <- colorRampPalette(pick.col)(length(unique(cd68SL)))
 
   # CD138
-    cd138 <- metadata$CD138.max
+    cd138 <- metadata$CD138
     cd138 <- cd138[!is.na(cd138)]
     pick.col <- brewer.pal(9, 'Purples')
     col.cd138 <- colorRampPalette(pick.col)(length(unique(cd68SL)))
